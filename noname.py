@@ -79,7 +79,7 @@ class SetupRecorder ( wx.Frame ):
 		self.label_streamurl.Wrap( -1 )
 		fgSizer1.Add( self.label_streamurl, 0, wx.ALIGN_CENTER_VERTICAL|wx.ALIGN_RIGHT|wx.ALL, 5 )
 		
-		input_stream_urlChoices = [ u"twitch.tv/gronkh", u"twitch.tv/numpad0to9", u"twitch.tv/c4mlann" ]
+		input_stream_urlChoices = [ u"twitch.tv/gronkh", u"twitch.tv/numpad0to9", u"twitch.tv/lpmassive" ]
 		self.input_stream_url = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( -1,-1 ), input_stream_urlChoices, wx.CB_SORT )
 		self.input_stream_url.SetSelection( 0 )
 		self.input_stream_url.SetToolTip( u"URL des Streams" )
@@ -143,7 +143,7 @@ class SetupRecorder ( wx.Frame ):
 		self.timer_waitforstart.SetOwner( self, wx.ID_ANY )
 		self.timer_fetchinfo_after = wx.Timer()
 		self.timer_fetchinfo_after.SetOwner( self, wx.ID_ANY )
-		self.timer_fetchinfo_after.Start( 1500, True )
+		self.timer_fetchinfo_after.Start( 1500, true )
 		
 		
 		self.Centre( wx.BOTH )
@@ -151,6 +151,10 @@ class SetupRecorder ( wx.Frame ):
 		# Connect Events
 		self.Bind( wx.EVT_ACTIVATE, self.action_on_create )
 		self.Bind( wx.EVT_MENU, self.action_choosedir, id = self.recorder_menu_file_downloadpath.GetId() )
+		self.Bind( wx.EVT_MENU, self.action_select_oncomplete, id = self.recorder_menu_tools_onfinish_noop.GetId() )
+		self.Bind( wx.EVT_MENU, self.action_select_oncomplete, id = self.recorder_menu_tools_onfinish_exit.GetId() )
+		self.Bind( wx.EVT_MENU, self.action_select_oncomplete, id = self.recorder_menu_tools_onfinish_shutdown.GetId() )
+		self.Bind( wx.EVT_MENU, self.action_select_oncomplete, id = self.recorder_menu_tools_onfinish_standby.GetId() )
 		self.Bind( wx.EVT_MENU, self.action_help_bunnies, id = self.recorder_menu_help_cute.GetId() )
 		self.Bind( wx.EVT_MENU, self.action_help_show, id = self.recorder_menu_help_help.GetId() )
 		self.input_stream_url.Bind( wx.EVT_COMBOBOX, self.action_enter_streamurl_now )
@@ -169,6 +173,12 @@ class SetupRecorder ( wx.Frame ):
 	
 	def action_choosedir( self, event ):
 		event.Skip()
+	
+	def action_select_oncomplete( self, event ):
+		event.Skip()
+	
+	
+	
 	
 	def action_help_bunnies( self, event ):
 		event.Skip()

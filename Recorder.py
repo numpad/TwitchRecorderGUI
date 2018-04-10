@@ -3,11 +3,14 @@
 # std
 import os
 import time
+from threading import Thread
+
 # lib
 import wx
 import youtube_dl
 # own
 import noname as RecorderGUI
+RecorderGUI.true = True # hotfix for shitty wxFormBuilder
 
 ########
 # util #
@@ -68,6 +71,7 @@ def action_on_create(self, event):
 	self.YDL = youtube_dl.YoutubeDL({'quiet': True, 'verbose': False, 'no_warnings': True})
 	self.DOWNLOAD_DESTINATION = ""
 	self.LAST_CHECKED_URL = ""
+	self.ON_COMPLETE = None
 	pass
 
 def action_enter_streamurl(self, event):
@@ -109,15 +113,7 @@ def action_help_show(self, event):
 	pass
 
 def action_recordstream(self, event):
-	option = None;
-	if self.recorder_menu_tools.FindItemById(RecorderGUI.ID_ONCOMPLETE_CLOSE).IsChecked():
-		print("Close on complete")
-	if self.recorder_menu_tools.FindItemById(RecorderGUI.ID_ONCOMPLETE_SHUTDOWN).IsChecked():
-		print("Shutdown on complete")
-	if self.recorder_menu_tools.FindItemById(RecorderGUI.ID_ONCOMPLETE_STANDBY).IsChecked():
-		print("Standby on complete")
-	
-	print("Test")
+	pass
 
 def timertick_fetchinfo_after(self, event):
 	#print("CHECKING: " + str(self.input_stream_url.GetValue()))
@@ -132,6 +128,17 @@ def action_enter_streamurl_now(self, event):
 	self.timer_fetchinfo_after.Stop()
 	self.LAST_CHECKED_URL = self.input_stream_url.GetValue()
 	fetch_stream_status(self, self.input_stream_url.GetValue())
+
+def action_select_oncomplete(self, event):
+	if self.recorder_menu_tools.FindItemById(RecorderGUI.ID_ONCOMPLETE_CLOSE).IsChecked():
+		self.ON_COMPLETE = 'close'
+	elif self.recorder_menu_tools.FindItemById(RecorderGUI.ID_ONCOMPLETE_SHUTDOWN).IsChecked():
+		self.ON_COMPLETE = 'shutdown'
+	elif self.recorder_menu_tools.FindItemById(RecorderGUI.ID_ONCOMPLETE_STANDBY).IsChecked():
+		self.ON_COMPLETE = 'standby'
+	else:
+		self.ON_COMPLETE = None
+	
 	
 RecorderGUI.SetupRecorder.action_choosedir = action_choosedir
 RecorderGUI.SetupRecorder.action_help_bunnies  = action_help_bunnies
@@ -141,6 +148,7 @@ RecorderGUI.SetupRecorder.action_on_create = action_on_create
 RecorderGUI.SetupRecorder.action_enter_streamurl = action_enter_streamurl
 RecorderGUI.SetupRecorder.timertick_fetchinfo_after = timertick_fetchinfo_after
 RecorderGUI.SetupRecorder.action_enter_streamurl_now = action_enter_streamurl_now
+RecorderGUI.SetupRecorder.action_select_oncomplete = action_select_oncomplete
 
 if __name__ == '__main__':
 	# fix wxfb export
