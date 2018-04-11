@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*- 
 
 ###########################################################################
-## Python code generated with wxFormBuilder (version Jan 23 2018)
+## Python code generated with wxFormBuilder (version Apr  9 2018)
 ## http://www.wxformbuilder.org/
 ##
-## PLEASE DO *NOT* EDIT THIS FILE!
+## PLEASE DO "NOT" EDIT THIS FILE!
 ###########################################################################
 
 import wx
@@ -24,7 +24,7 @@ class SetupRecorder ( wx.Frame ):
 	def __init__( self, parent ):
 		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Twitch Recorder", pos = wx.DefaultPosition, size = wx.Size( 350,285 ), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
 		
-		self.SetSizeHints( wx.Size( 150,276 ), wx.DefaultSize )
+		self.SetSizeHintsSz( wx.Size( 150,276 ), wx.DefaultSize )
 		self.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_WINDOW ) )
 		
 		self.recorder_statusbar = self.CreateStatusBar( 1, wx.ST_SIZEGRIP, wx.ID_ANY )
@@ -32,23 +32,23 @@ class SetupRecorder ( wx.Frame ):
 		self.recorder_menu_file = wx.Menu()
 		self.recorder_menu_file_downloadpath = wx.MenuItem( self.recorder_menu_file, wx.ID_ANY, u"Download-Ordner setzen...", wx.EmptyString, wx.ITEM_NORMAL )
 		self.recorder_menu_file_downloadpath.SetBitmap( wx.NullBitmap )
-		self.recorder_menu_file.Append( self.recorder_menu_file_downloadpath )
+		self.recorder_menu_file.AppendItem( self.recorder_menu_file_downloadpath )
 		
 		self.recorder_menubar.Append( self.recorder_menu_file, u"Datei" ) 
 		
 		self.recorder_menu_tools = wx.Menu()
 		self.recorder_menu_tools_onfinish = wx.Menu()
 		self.recorder_menu_tools_onfinish_noop = wx.MenuItem( self.recorder_menu_tools_onfinish, wx.ID_ANY, u"Nichts tun...", wx.EmptyString, wx.ITEM_RADIO )
-		self.recorder_menu_tools_onfinish.Append( self.recorder_menu_tools_onfinish_noop )
+		self.recorder_menu_tools_onfinish.AppendItem( self.recorder_menu_tools_onfinish_noop )
 		
 		self.recorder_menu_tools_onfinish_exit = wx.MenuItem( self.recorder_menu_tools_onfinish, ID_ONCOMPLETE_CLOSE, u"Programm schließen", wx.EmptyString, wx.ITEM_RADIO )
-		self.recorder_menu_tools_onfinish.Append( self.recorder_menu_tools_onfinish_exit )
+		self.recorder_menu_tools_onfinish.AppendItem( self.recorder_menu_tools_onfinish_exit )
 		
 		self.recorder_menu_tools_onfinish_shutdown = wx.MenuItem( self.recorder_menu_tools_onfinish, ID_ONCOMPLETE_SHUTDOWN, u"Shutdown", wx.EmptyString, wx.ITEM_RADIO )
-		self.recorder_menu_tools_onfinish.Append( self.recorder_menu_tools_onfinish_shutdown )
+		self.recorder_menu_tools_onfinish.AppendItem( self.recorder_menu_tools_onfinish_shutdown )
 		
 		self.recorder_menu_tools_onfinish_standby = wx.MenuItem( self.recorder_menu_tools_onfinish, ID_ONCOMPLETE_STANDBY, u"Standby", wx.EmptyString, wx.ITEM_RADIO )
-		self.recorder_menu_tools_onfinish.Append( self.recorder_menu_tools_onfinish_standby )
+		self.recorder_menu_tools_onfinish.AppendItem( self.recorder_menu_tools_onfinish_standby )
 		
 		self.recorder_menu_tools.AppendSubMenu( self.recorder_menu_tools_onfinish, u"Nach fertigem Download..." )
 		
@@ -56,12 +56,12 @@ class SetupRecorder ( wx.Frame ):
 		
 		self.recorder_menu_help = wx.Menu()
 		self.recorder_menu_help_cute = wx.MenuItem( self.recorder_menu_help, wx.ID_ANY, u"Süße Häschenbilder!", wx.EmptyString, wx.ITEM_NORMAL )
-		self.recorder_menu_help.Append( self.recorder_menu_help_cute )
+		self.recorder_menu_help.AppendItem( self.recorder_menu_help_cute )
 		
 		self.recorder_menu_help.AppendSeparator()
 		
 		self.recorder_menu_help_help = wx.MenuItem( self.recorder_menu_help, wx.ID_ANY, u"Anleitung", wx.EmptyString, wx.ITEM_NORMAL )
-		self.recorder_menu_help.Append( self.recorder_menu_help_help )
+		self.recorder_menu_help.AppendItem( self.recorder_menu_help_help )
 		
 		self.recorder_menubar.Append( self.recorder_menu_help, u"Hilfe" ) 
 		
@@ -82,7 +82,7 @@ class SetupRecorder ( wx.Frame ):
 		input_stream_urlChoices = [ u"twitch.tv/gronkh", u"twitch.tv/numpad0to9", u"twitch.tv/lpmassive" ]
 		self.input_stream_url = wx.ComboBox( self, wx.ID_ANY, wx.EmptyString, wx.DefaultPosition, wx.Size( -1,-1 ), input_stream_urlChoices, wx.CB_SORT )
 		self.input_stream_url.SetSelection( 0 )
-		self.input_stream_url.SetToolTip( u"URL des Streams" )
+		self.input_stream_url.SetToolTipString( u"URL des Streams" )
 		
 		fgSizer1.Add( self.input_stream_url, 1, wx.ALL|wx.EXPAND, 2 )
 		
@@ -93,7 +93,7 @@ class SetupRecorder ( wx.Frame ):
 		input_stream_recordchatChoices = [ u"Nein", u"Ja, nur in Datei", u"Ja, Neben dem Video", u"Ja, Auf dem Video" ]
 		self.input_stream_recordchat = wx.Choice( self, wx.ID_ANY, wx.DefaultPosition, wx.DefaultSize, input_stream_recordchatChoices, 0 )
 		self.input_stream_recordchat.SetSelection( 0 )
-		self.input_stream_recordchat.SetToolTip( u"Ob und wie der Chat aufgenommen werden soll" )
+		self.input_stream_recordchat.SetToolTipString( u"Ob und wie der Chat aufgenommen werden soll" )
 		
 		fgSizer1.Add( self.input_stream_recordchat, 0, wx.ALL|wx.EXPAND, 2 )
 		
@@ -209,7 +209,7 @@ class DialogSetDownloadPath ( wx.Dialog ):
 	def __init__( self, parent ):
 		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Download Pfad", pos = wx.DefaultPosition, size = wx.Size( 430,150 ), style = wx.DEFAULT_DIALOG_STYLE )
 		
-		self.SetSizeHints( wx.Size( 430,150 ), wx.Size( -1,150 ) )
+		self.SetSizeHintsSz( wx.Size( 430,150 ), wx.Size( -1,150 ) )
 		
 		bSizer2 = wx.BoxSizer( wx.VERTICAL )
 		
@@ -248,7 +248,7 @@ class DialogShowHelp ( wx.Dialog ):
 	def __init__( self, parent ):
 		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Anleitung", pos = wx.DefaultPosition, size = wx.Size( 400,300 ), style = wx.DEFAULT_DIALOG_STYLE )
 		
-		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
 		
 		bSizer3 = wx.BoxSizer( wx.VERTICAL )
 		
@@ -274,7 +274,7 @@ class DialogStreamOffline ( wx.Dialog ):
 	def __init__( self, parent ):
 		wx.Dialog.__init__ ( self, parent, id = wx.ID_ANY, title = u"Aufnahme fehlgeschlagen", pos = wx.DefaultPosition, size = wx.Size( 452,125 ), style = wx.DEFAULT_DIALOG_STYLE )
 		
-		self.SetSizeHints( wx.DefaultSize, wx.DefaultSize )
+		self.SetSizeHintsSz( wx.DefaultSize, wx.DefaultSize )
 		
 		bSizer4 = wx.BoxSizer( wx.VERTICAL )
 		

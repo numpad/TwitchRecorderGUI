@@ -64,15 +64,31 @@ def fetch_stream_status(self, url):
 		)
 	return True
 
+def fetch_stream_status_parallel(self, url):
+	self.THREAD_FETCHINFO = Thread(target = fetch_stream_status, args = (self, url))
+	self.THREAD_FETCHINFO.start()
+
+def ydlhook_progress(dl):
+	status = dl['status']
+
+	if status == 'finished':
+		print('downloaded ' + os.path.abspath(dl['filename']))
+	elif status == 'downloading':
+		print(dl['filename'], dl['_percent_str'], d['_eta_str'])
+
 ##################
 # event handlers #
 ##################
 def action_on_create(self, event):
-	self.YDL = youtube_dl.YoutubeDL({'quiet': True, 'verbose': False, 'no_warnings': True})
-	self.DOWNLOAD_DESTINATION = ""
+	self.YDL = youtube_dl.YoutubeDL({
+		'quiet': True,
+		'verbose': False,
+		'no_warnings': True,
+		'progress_hooks': [ydlhook_progress],
+	})
+	self.DOWNLOAD_DESTINATION = '.'
 	self.LAST_CHECKED_URL = ""
 	self.ON_COMPLETE = None
-	pass
 
 def action_enter_streamurl(self, event):
 	if self.timer_fetchinfo_after.IsRunning():
@@ -83,7 +99,7 @@ def action_enter_streamurl(self, event):
 		return
 	
 	#print("START TIMER: " + str(self.input_stream_url.GetValue()))
-	self.timer_fetchinfo_after.StartOnce(750)
+	self.timer_fetchinfo_after.StartOnce(550)
 	#fetch_stream_status(self, self.input_stream_url.GetValue())
 	
 	
@@ -91,21 +107,16 @@ def action_choosedir(self, event):
 	dir_dialog = RecorderGUI.DialogSetDownloadPath(self)
 	
 	# set currently selected path in the dialog
-	current_path = self.DOWNLOAD_DESTINATION
-	if self.DOWNLOAD_DESTINATION == "":
-		current_path = u"<automatisch>"
-	else:
-		current_path = self.DOWNLOAD_DESTINATION
-	dir_dialog.input_dialog_dir.SetPath(current_path)
+	dir_dialog.input_dialog_dir.SetPath(self.DOWNLOAD_DESTINATION)
 	
 	# show dialog, set current path if valid one has been entered and confirmed with "ok"
 	if dir_dialog.ShowModal() == wx.ID_OK:
 		dstpath = dir_dialog.input_dialog_dir.GetPath()
 		if os.path.isdir(dstpath):
-			self.DOWNLOAD_DESTINATION = dstpath
+			self.DOWNLOAD_DESTINATION = '' + dstpath
 		else:
-			self.DOWNLOAD_DESTINATION = ""
-	
+			self.DOWNLOAD_DESTINATION = '.'
+
 def action_help_bunnies(self, event):
 	pass
 
@@ -113,7 +124,28 @@ def action_help_show(self, event):
 	pass
 
 def action_recordstream(self, event):
-	pass
+	stream_url = self.input_stream_url.GetValue()
+	stream_info = video_info(self.YDL, stream_url)
+	stream_online = False
+	record_onstart = False
+
+	if stream_info is None:
+		dialog_offline = RecorderGUI.DialogStreamOffline(self)
+		if dialog_offline.ShowModal() == wx.ID_OK:
+			record_onstart = dialog_offline.input_startrecord_onstart.GetValue()
+	else:
+		stream_online = True
+	
+	print("wait for start: " + str(record_onstart))
+	print("is online?: " + str(stream_online))
+	print("downloading to: " + self.DOWNLOAD_DESTINATION)
+	
+	if not stream_online and not record_onstart:
+		return
+	
+	# begin video download
+	self.button_record.SetLabel("Warten abbrechen...")
+	download_video(self, stream_url)
 
 def timertick_fetchinfo_after(self, event):
 	#print("CHECKING: " + str(self.input_stream_url.GetValue()))
@@ -158,3 +190,4 @@ if __name__ == '__main__':
 	frame = RecorderGUI.SetupRecorder(None)
 	frame.Show()
 	app.MainLoop()
+
